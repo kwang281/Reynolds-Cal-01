@@ -1,0 +1,32 @@
+name: Reynolds Number Calculator
+
+on:
+  repository_dispatch:
+    types: [reynolds-calc] # Teams의 이벤트 이름과 반드시 일치해야 함
+
+jobs:
+  compute:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+
+      - name: Run Calculation
+        id: py_run
+        env:
+          INPUT_DATA: ${{ toJson(github.event.client_payload) }}
+        run: python your_script.py
+
+      - name: Notify Teams
+        if: success()
+        run: |
+          curl -H "Content-Type: application/json" \
+          -d '{
+                "text": "✅ **계산 완료**\n\n- **유속:** ${{ github.event.client_payload.velocity }} m/s\n- **길이:** ${{ github.event.client_payload.length }} m\n- **결과 (Re):** ${{ steps.py_run.outputs.re_result }}"
+              }' \
+          ${{ secrets.TEAMS_WEBHOOK_URL }}
