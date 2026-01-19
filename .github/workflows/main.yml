@@ -29,4 +29,4 @@ jobs:
           -d '{
                 "text": "✅ **계산 완료**\n\n- **유속:** ${{ github.event.client_payload.velocity }} m/s\n- **길이:** ${{ github.event.client_payload.length }} m\n- **결과 (Re):** ${{ steps.py_run.outputs.re_result }}"
               }' \
-          ${{ secrets.TEAMS_WEBHOOK_URL }}
+          ${{ secrets.TEAMS_WEBHOOK_URL_EXAM }}
