@@ -20,7 +20,7 @@ jobs:
         id: py_run
         env:
           INPUT_DATA: ${{ toJson(github.event.client_payload) }}
-        run: python your_script.py
+        run: python app.py
 
       - name: Notify Teams
         if: success()
